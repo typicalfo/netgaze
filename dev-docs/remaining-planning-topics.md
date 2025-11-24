@@ -1,18 +1,28 @@
-Here are the remaining addendums we still need to complete before the plan is 100% ready for coding agents:
+Current planning status: 20 of 21 addendums completed.
 
-3. Ping Collector Details  
-4. Traceroute Collector Details  
-5. WHOIS Collector Details  
-6. ASN / BGP Collector Details  
-7. Geolocation Collector Details  
-8. Port Scan Collector Details  
-9. TLS Certificate Collector Details  
-10. Collector Orchestrator (collector/collector.go) – how errgroup, timeouts, and error aggregation work  
-11. ADK Agent Setup & Tool Signatures (agent/agent.go + tools.go) – exact tool schemas, prompts, and OpenRouter config  
-12. Template Contents (internal/templates/) – exact contents of summary.txt, summary.md, raw.txt  
-13. Exact Common Ports List (final hard-coded list)  
-14. Error Handling & Graceful Degradation Strategy (across all collectors + UI)  
-15. CLI Flag Definitions (exact urfave/cli or cobra spec)  
-16. TUI Component Breakdown & State Machine (ui/model.go – tabs, progress, ask mode)  
-17. Output Rendering Logic (--output md/json/text/raw + piping detection)  
-18. Build & Distribution Notes (go build flags, static binary, cgo considerations)
+**Completed Addendums:**
+- Report Struct Schema  
+- DNS Collector Details  
+- Ping Collector Details  
+- Traceroute Collector Details  
+- WHOIS Collector Details  
+- ASN / BGP Collector Details  
+- Geolocation Collector Details  
+- Port Scan Collector Details  
+- TLS Certificate Collector Details  
+- Collector Orchestrator  
+- ADK Agent Setup & Tool Signatures  
+- Template Contents  
+- Exact Common Ports List  
+- Error Handling & Graceful Degradation Strategy  
+- CLI Flag Definitions (spf13/cobra)  
+- TUI Component Breakdown & State Machine  
+- Output Rendering Logic  
+- Build & Distribution Notes  
+- TUI Implementation with Code Samples  
+- TUI Template System & Styling Guide  
+
+**Remaining:**
+- 21. Context7 MCP Integration Guide
+
+**Important Development Requirement**: No special characters (emoji, unicode symbols) should be used in any code, templates, documentation, or output. Users will frequently copy/paste output, and these characters complicate downstream processing. Use plain text alternatives (e.g., "Success", "Error", "Warning" instead of symbols).

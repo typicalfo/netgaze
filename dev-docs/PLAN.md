@@ -19,7 +19,7 @@ Two distinct modes:
 netgaze <ip|domain|url> [flags]
 
 Flags:
-  --ports          Enable light port scan (common ports)
+  --ports          Enable port scan of common ports (not enabled by default)
   --no-agent, -A   Disable AI entirely (faster, deterministic)
   --output string  text (default), md, json, raw   (only active with --no-agent or when piping)
   --timeout duration   Global timeout (default 15s)
@@ -44,7 +44,7 @@ netgaze 8.8.8.8 --no-agent --output json > intel.json
 | WHOIS             | Domain/IP whois query                           | github.com/likexian/whois                 | 6s      |
 | ASN + BGP         | Team Cymru DNS lookup                           | github.com/ammario/ipisp                  | 3s      |
 | Geolocation       | ip-api.com (free tier, no key)                  | net/http + JSON                           | 4s      |
-| Common port scan  | Top ~20 common ports when --ports               | projectdiscovery/naabu (config: -top-ports 100 or custom list) | 10s |
+| Common port scan  | Top 20 common ports only when --ports explicitly specified | projectdiscovery/naabu (config: -top-ports 100 or custom list) | 10s |
 | TLS cert grab     | If 443 open, pull cert subject/CN/expiry        | crypto/tls                                | 4s      |
 
 Common ports list (hard-coded):
@@ -121,3 +121,6 @@ netgaze/
 - All output formats (--output md/json/text/raw) identical in data
 - Zero panics on unreachable hosts or timeouts
 - Single static binary (no cgo if possible for broader OS support)
+
+## Development Requirements
+- **No special characters**: Do not use emoji, unicode symbols, or special characters (✅, ❌, ⚠️, etc.) in any code, templates, documentation, or output. Users will copy/paste output frequently, and these characters complicate downstream processing. Use plain text alternatives (e.g., "Success", "Error", "Warning" instead of symbols).
