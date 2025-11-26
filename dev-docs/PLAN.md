@@ -5,7 +5,7 @@
 
 Two distinct modes:
 1. Full mode – with AI augmentation (Google ADK + OpenRouter/grok-4.1)
-2. `--no-agent` mode – zero AI, fully deterministic, templated output, works offline after data collection
+2. Offline templated output mode – deterministic, works without external services
 
 ## Core Goals
 - Sub-12 second total runtime for average target
@@ -16,22 +16,23 @@ Two distinct modes:
 
 ## CLI Interface
 ```
-netgaze <ip|domain|url> [flags]
+ng <ip|domain|url> [flags]           # Default text output
+ng tui <ip|domain|url> [flags]        # Interactive TUI mode
 
 Flags:
   --ports          Enable port scan of common ports (not enabled by default)
-  --no-agent, -A   Disable AI entirely (faster, deterministic)
-  --output string  text (default), md, json, raw   (only active with --no-agent or when piping)
+  --ai, -A         Enable AI-augmented mode (requires OPENROUTER_API_KEY)
+  --output string  text (default), md, json, raw   (only active in non-AI mode or when piping)
   --timeout duration   Global timeout (default 15s)
   --json           Legacy alias for --output json
 ```
 
 Examples:
 ```bash
-netgaze 1.1.1.1
-netgaze google.com --ports
-netgaze suspicious.site --no-agent --output md > report.md
-netgaze 8.8.8.8 --no-agent --output json > intel.json
+ng 1.1.1.1                           # Text output with styling
+ng tui google.com --ports             # Interactive TUI mode
+ng -ai suspicious.site --output md > report.md
+ng 8.8.8.8 --output json > intel.json
 ```
 
 ## Data Collection (all run in parallel)
@@ -50,30 +51,29 @@ netgaze 8.8.8.8 --no-agent --output json > intel.json
 Common ports list (hard-coded):
 `22,53,80,110,135,139,143,443,993,995,1723,3306,3389,5900,8080,8443,10000`
 
-## AI Integration (only when NOT --no-agent)
+## Future Integration (reserved)
 - Provider: OpenRouter (model: grok-4.1 free tier)
-- Toolkit: google/agent-toolkit-go
+- Toolkit: (not used in this version)
 - Env var: OPENROUTER_API_KEY (required only in AI mode)
-- Single agent with four custom tools:
+- Planned integration with external toolkit (removed in this version):
   - summarize_findings(json_report)
   - detect_anomalies(json_report)
   - suggest_next_steps(json_report)
   - answer_question(user_question, json_report)
-- All raw data passed as structured JSON to the agent
+- All raw data passed as structured JSON to any future integration layer
 - Streaming output in TUI
 
 ## TUI Layout (bubbletea)
 - Header: target + elapsed time
 - Three tabs (1-3 keys):
   1. Summary
-     - With AI → live-streamed agent response
-     - With --no-agent → static Go text/template
-  2. Raw Data → beautifully formatted sections (lipgloss tables)
-  3. Ask → live chat with agent (hidden entirely in --no-agent mode)
+      - Static Go text/template summary
+   2. Raw Data → beautifully formatted sections (lipgloss tables)
+   3. Ask → reserved for future interactive help (disabled in this version)
 - Progress spinner during collection
 - Fully navigable after completion (q or Ctrl+C to quit)
 
-## No-AI Templated Output (--no-agent)
+## Non-AI Templated Output
 Templates are embedded at compile time (//go:embed):
 - internal/templates/summary.txt     → colored terminal (lipgloss-styled at runtime)
 - internal/templates/summary.md      → GitHub-flavored markdown
@@ -99,9 +99,8 @@ netgaze/
 │   │   └── ports.go
 │   ├── model/
 │   │   └── types.go             # full Report struct + sub-structs
-│   ├── agent/
-│   │   ├── agent.go             # ADK init + OpenRouter config
-│   │   └── tools.go             # custom tool definitions
+│   ├── integration/            # reserved for any future integrations
+│   │   └── README.md
 │   ├── ui/
 │   │   ├── model.go
 │   │   ├── view.go
@@ -116,8 +115,8 @@ netgaze/
 ```
 
 ## Success Criteria
-- Full run <12s average, <8s in --no-agent mode
-- Works without OPENROUTER_API_KEY when --no-agent used
+- Full run <12s average
+- Works without any AI or external LLM keys
 - All output formats (--output md/json/text/raw) identical in data
 - Zero panics on unreachable hosts or timeouts
 - Single static binary (no cgo if possible for broader OS support)

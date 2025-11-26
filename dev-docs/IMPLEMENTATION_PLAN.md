@@ -102,7 +102,7 @@ This plan implements netgaze, a fast network reconnaissance TUI tool built in Go
 - [ ] Implement output format detection and validation
 - [ ] Add piping detection for non-TUI output
 - [ ] Create JSON output with proper formatting
-- [ ] Handle --output flag with --no-agent mode
+- [ ] Handle --output flag behavior for all formats
 
 ### Phase 4: TUI Implementation
 **Timeline: Days 9-11**
@@ -131,23 +131,23 @@ This plan implements netgaze, a fast network reconnaissance TUI tool built in Go
 - [ ] Add error display and graceful degradation UI
 - [ ] Handle terminal resize events
 
-### Phase 5: AI Agent Integration
+### Phase 5: Reserved for Future Integrations (not implemented)
 **Timeline: Days 12-13**
 
-#### 5.1 Agent Infrastructure (`internal/agent/agent.go`)
-- [ ] Integrate google/agent-toolkit-go
+#### 5.1 Integration Infrastructure (placeholder)
+- [ ] (Removed)
 - [ ] Set up OpenRouter API client with grok-4.1
-- [ ] Implement agent initialization and configuration
+- [ ] (Removed)
 - [ ] Add API key management and validation
 
-#### 5.2 Custom Tools (`internal/agent/tools.go`)
+#### 5.2 Custom Tools (placeholder for future integrations)
 - [ ] Implement `summarize_findings` tool
 - [ ] Implement `detect_anomalies` tool
 - [ ] Implement `suggest_next_steps` tool
 - [ ] Implement `answer_question` tool
 
-#### 5.3 AI Integration
-- [ ] Connect agent to TUI Ask tab
+#### 5.3 Integration (not implemented in this version)
+- [ ] (Removed)
 - [ ] Implement streaming response display
 - [ ] Add error handling for API failures
 - [ ] Ensure graceful fallback when AI unavailable
@@ -205,7 +205,7 @@ github.com/ammario/ipisp
 github.com/projectdiscovery/naabu
 
 // AI Integration
-github.com/google/agent-toolkit-go
+(Removed: AI toolkit not used)
 
 // Standard library
 golang.org/x/sync/errgroup
@@ -213,7 +213,7 @@ golang.org/x/sync/errgroup
 
 ### Performance Targets
 - Total runtime: <12 seconds average
-- No-agent mode: <8 seconds average
+- Non-AI mode: <8 seconds average
 - Memory usage: <50MB typical
 - Binary size: <25MB static
 
@@ -242,7 +242,7 @@ golang.org/x/sync/errgroup
 ### Integration Requirements
 - [ ] Works behind corporate proxies
 - [ ] Respects HTTP_PROXY/NO_PROXY environment variables
-- [ ] Works offline in --no-agent mode after data collection
+- [ ] Works fully offline after data collection
 - [ ] Handles all input types (IP, domain, URL) correctly
 
 ## Implementation Notes

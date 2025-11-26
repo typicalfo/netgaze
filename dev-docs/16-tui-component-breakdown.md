@@ -20,7 +20,7 @@ type Tab int
 const (
     TabSummary Tab = iota
     TabRawData
-    TabAsk // Hidden in --no-agent mode
+    TabAsk
 )
 ```
 
@@ -42,8 +42,7 @@ type Model struct {
     viewport  viewport.Model
     textInput textinput.Model
     
-    // AI mode specific
-    agent     *agent.Agent
+    // Future interactive Ask tab (not implemented)
     messages  []ChatMessage
     streaming bool
     
@@ -125,7 +124,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             cmd = m.generateSummary()
         }
         
-    case agent.StreamMsg:
+    // StreamMsg handling removed – no AI integration in this version
         m.messages = append(m.messages, ChatMessage{
             Role:    "assistant",
             Content: msg.Content,
@@ -136,7 +135,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             cmd = m.waitForStream()
         }
         
-    case agent.ErrorMsg:
+    // ErrorMsg handling removed – no AI integration in this version
         m.fatalError = msg.Err
         m.state = StateComplete
     }
@@ -306,11 +305,11 @@ func (m Model) renderDNSSection() string {
 }
 ```
 
-**Ask Tab (hidden in --no-agent mode)**
+**Ask Tab (reserved for future interactive help)**
 ```go
 func (m Model) renderAsk() string {
     if m.noAgent {
-        return "AI features are disabled in --no-agent mode"
+        return "Interactive Ask tab is not available in this version"
     }
     
     input := lipgloss.NewStyle().

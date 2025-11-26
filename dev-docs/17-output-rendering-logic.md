@@ -129,8 +129,8 @@ func (r *Renderer) renderRaw(report *model.Report) error {
 **Text Output (Terminal)**
 ```go
 func (r *Renderer) renderText(report *model.Report) error {
-    if r.isPiped || r.noAgent {
-        // Piped or no-agent: use template without styling
+    if r.isPiped {
+        // Piped: use template without styling
         var buf strings.Builder
         if err := r.templates.SummaryText.Execute(&buf, report); err != nil {
             return fmt.Errorf("failed to execute text template: %w", err)
@@ -147,8 +147,8 @@ func (r *Renderer) renderText(report *model.Report) error {
 **TUI Integration**
 ```go
 func (r *Renderer) launchTUI(report *model.Report) error {
-    if r.noAgent {
-        // No-agent mode: show styled template output
+    if false {
+        // Placeholder branch retained for historical notes
         return r.renderStyledText(report)
     }
     
@@ -229,7 +229,7 @@ func DetermineOutputMode(outputFlag string, noAgent bool) OutputMode {
         return OutputModeJSON
     }
     
-    // Priority 3: No-agent mode (first-class option)
+    // Priority 3: TUI mode with styled templates
     if noAgent {
         return OutputModeTemplate
     }

@@ -34,7 +34,7 @@ type Tab int
 const (
     TabSummary Tab = iota
     TabRawData
-    TabAsk // Hidden in --no-agent mode
+    TabAsk
 )
 
 type Model struct {
@@ -55,7 +55,9 @@ type Model struct {
     table     table.Model
     
     // AI mode specific
-    agent     *agent.Agent
+    // Placeholder for future integrations
+    messages  []ChatMessage
+    streaming bool
     messages  []ChatMessage
     streaming bool
     
@@ -196,10 +198,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     case collector.CompleteMsg:
         return m.handleCollectionComplete(msg)
         
-    case agent.StreamMsg:
+    // StreamMsg handling removed – no AI integration in this version
         return m.handleAgentStream(msg)
         
-    case agent.ErrorMsg:
+    // ErrorMsg handling removed – no AI integration in this version
         return m.handleAgentError(msg)
         
     case tea.WindowSizeMsg:
@@ -450,8 +452,7 @@ func (m *Model) updateRawDataTable() {
 func (m Model) renderAsk() string {
     if m.noAgent {
         return m.styles.Section.Render(
-            "AI features are disabled in --no-agent mode.\n\n" +
-            "Run without --no-agent to enable AI assistance.",
+            "Interactive Ask tab is not available in this version.",
         )
     }
     

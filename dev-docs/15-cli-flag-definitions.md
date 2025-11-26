@@ -15,25 +15,23 @@ import (
 
 var (
     enablePorts bool
-    noAgent     bool
     output      string
     timeout     time.Duration
 )
 
 var rootCmd = &cobra.Command{
-    Use:   "netgaze [flags] <ip|domain|url>",
+    Use:   "ng [flags] <ip|domain|url>",
     Short: "Fast network reconnaissance TUI",
-    Long: `netgaze is a fast, single-binary TUI that runs common network
+    Long: `ng is a fast, single-binary TUI that runs common network
 reconnaissance tools in parallel and presents results beautifully.
 
-Two modes:
-  • Full mode with AI augmentation (requires OPENROUTER_API_KEY)
-  • No-agent mode with templated output (works offline)
+Mode:
+  • Deterministic, offline templated output (no AI)
 
 Examples:
-  netgaze 1.1.1.1
-  netgaze google.com --ports
-  netgaze suspicious.site --no-agent --output md > report.md`,
+  ng 1.1.1.1
+  ng tui google.com --ports
+  ng -ai suspicious.site --output md > report.md`,
     Args:         cobra.ExactArgs(1),
     SilenceUsage: true,
     RunE:         runNetgaze,
@@ -42,10 +40,8 @@ Examples:
 func init() {
     rootCmd.Flags().BoolVar(&enablePorts, "ports", false, 
         "Enable port scan of common ports (not enabled by default)")
-    rootCmd.Flags().BoolVarP(&noAgent, "no-agent", "A", false, 
-        "Disable AI entirely (faster, deterministic, works offline)")
     rootCmd.Flags().StringVar(&output, "output", "text", 
-        "Output format: text, md, json, raw (only with --no-agent or when piping)")
+        "Output format: text, md, json, raw (for piping or automation)")
     rootCmd.Flags().StringVar(&output, "json", "", 
         "Legacy alias for --output json")
     rootCmd.Flags().DurationVar(&timeout, "timeout", 15*time.Second, 
@@ -235,7 +231,7 @@ func validateFlags() error {
     
     // Check for incompatible flag combinations
     if noAgent && output == "json" && os.Stdout.IsTerminal() {
-        return fmt.Errorf("JSON output with --no-agent requires piping or file redirection")
+        return fmt.Errorf("JSON output in non-AI mode requires piping or file redirection")
     }
     
     return nil
@@ -244,26 +240,26 @@ func validateFlags() error {
 
 **Help Examples**
 ```bash
-# Basic usage
-netgaze 8.8.8.8
+# Basic usage (text output)
+ng 8.8.8.8
 
-# With port scanning
-netgaze example.com --ports
+# Interactive TUI mode
+ng tui example.com --ports
 
-# No AI mode with markdown output
-netgaze suspicious.site --no-agent --output md > report.md
+# Markdown report
+ng suspicious.site --output md > report.md
 
 # JSON output for automation
-netgaze 1.1.1.1 --no-agent --output json
+ng 1.1.1.1 --output json
 
 # Custom timeout
-netgaze slow-server.com --timeout 30s
+ng slow-server.com --timeout 30s
 
 # Configure API key
-netgaze config set-key
+ng config set-key
 
 # Show configuration
-netgaze config show
+ng config show
 ```
 
 **Error Handling**

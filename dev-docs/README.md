@@ -24,7 +24,7 @@ This directory contains comprehensive planning and implementation documentation 
 
 [10-collector-orchestrator.md](10-collector-orchestrator.md) - Parallel collection coordination with errgroup and error handling
 
-[11-adk-agent-setup.md](11-adk-agent-setup.md) - AI agent integration with OpenRouter and custom tools
+[11-adk-agent-setup.md](11-adk-agent-setup.md) - Future integration notes (not used in this tool)
 
 [12-template-contents.md](12-template-contents.md) - Output templates for text, markdown, and raw formats
 
@@ -50,7 +50,7 @@ This directory contains comprehensive planning and implementation documentation 
 
 ## About This Documentation
 
-These documents are designed for developers implementing netgaze and serve as reference for advanced AI-assisted coding. The planning covers every aspect of the application from data collection to user interface, with detailed technical specifications and code examples.
+These documents are designed for developers implementing netgaze and serve as reference for the full non-AI tool. The planning covers every aspect of the application from data collection to user interface, with detailed technical specifications and code examples.
 
 ### Key Features Covered
 
@@ -65,4 +65,4 @@ These documents are designed for developers implementing netgaze and serve as re
 
 The documentation follows a modular approach where each component is independently specified but designed to work together seamlessly. All code examples use the latest Charmbracelet ecosystem patterns and follow the no-special-characters requirement for maximum compatibility.
 
-For implementation guidance, agents should use the context7 MCP server to access the latest Charmbracelet documentation as needed.
+For implementation guidance, developers should use the context7 MCP server to access the latest Charmbracelet documentation as needed.

@@ -543,8 +543,7 @@ type Model struct {
     layout    *Layout
     styles    Styles
     
-    // AI mode specific
-    agent     *agent.Agent
+    // Future interactive features (not implemented)
     messages  []ChatMessage
     streaming bool
     

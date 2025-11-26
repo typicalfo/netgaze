@@ -3,7 +3,7 @@
 ## Build/Test Commands
 ```bash
 # Build the project
-go build -o netgaze ./cmd
+make build
 
 # Run tests
 go test ./...

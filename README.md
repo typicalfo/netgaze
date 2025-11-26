@@ -2,14 +2,13 @@
 
 netgaze is a fast, single-binary network reconnaissance tool with a Charmbracelet-powered TUI. Enter an IP, domain, or URL to run parallel passive/active collectors and view results in a beautiful terminal interface.
 
-Supports two modes:
-- Full mode with AI analysis (OpenRouter/grok)
-- `--no-agent` mode for deterministic, offline templated output
+Mode:
+- Deterministic, offline templated output (no AI)
 
 ## Features
 
 - Parallel data collection: DNS, PTR, ping, traceroute, WHOIS, ASN/BGP, geolocation, port scan (opt-in), TLS certs
-- Sub-12s average runtime (&lt;8s no-agent)
+- Sub-12s average runtime
 - Graceful degradation on failures
 - Multiple outputs: TUI, text, markdown, JSON, raw
 - Works behind proxies (HTTP_PROXY/NO_PROXY)
@@ -25,25 +24,27 @@ Or build from source:
 ```bash
 git clone https://github.com/typicalfo/netgaze
 cd netgaze
-go build -o netgaze ./cmd/root.go  # Update path as implemented
-./netgaze example.com
+make build  # Builds as 'ng' in project root
+./ng example.com
 ```
 
 ## Quick Start
 
 ```bash
-netgaze 1.1.1.1
-netgaze google.com --ports
-netgaze suspicious.site --no-agent --output md &gt; report.md
-netgaze 8.8.8.8 --no-agent --output json &gt; intel.json
+ng 1.1.1.1                    # Text output with styling
+ng tui google.com --ports      # Interactive TUI mode
+ng example.com
+ng 8.8.8.8 --output json &gt; intel.json            # JSON for automation
 ```
 
 Full CLI:
 ```
-netgaze &lt;target&gt; [flags]
+ng &lt;target&gt; [flags]           # Default text output
+ng tui &lt;target&gt; [flags]        # Interactive TUI mode
+
+Flags:
   --ports          Scan common ports (opt-in)
-  --no-agent, -A   Disable AI (faster, deterministic)
-  --output string  text/md/json/raw (no-agent or piping)
+  --output string  text/md/json/raw (for piping or automation)
   --timeout duration  Global timeout (default 15s)
   --json           Alias for --output json
 ```
@@ -52,8 +53,10 @@ AI mode requires `OPENROUTER_API_KEY` env var.
 
 ## TUI
 
+Launch with `ng tui <target>` for interactive mode:
+
 - Header: target + timer
-- Tabs (1-3): Summary (AI/templated), Raw Data (lipgloss tables), Ask (agent chat)
+- Tabs (1-3): Summary, Raw Data (lipgloss tables), Ask
 - Progress spinner during collection
 - Navigable post-completion (q/Ctrl+C to quit)
 

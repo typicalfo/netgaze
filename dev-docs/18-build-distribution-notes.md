@@ -11,15 +11,15 @@
 **Build Commands**
 ```bash
 # Development build
-go build -o netgaze ./cmd
+make build
 
 # Production build with version info
-go build -ldflags "-X main.version=v1.0.0 -X main.buildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" -o netgaze ./cmd
+go build -ldflags "-X main.version=v1.0.0 -X main.buildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" -o ng .
 
 # Cross-platform builds
-GOOS=linux GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o netgaze-linux-amd64 ./cmd
-GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o netgaze-darwin-amd64 ./cmd
-GOOS=windows GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o netgaze-windows-amd64.exe ./cmd
+GOOS=linux GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o ng-linux-amd64 .
+GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o ng-darwin-amd64 .
+GOOS=windows GOARCH=amd64 go build -ldflags "-X main.version=v1.0.0" -o ng-windows-amd64.exe .
 ```
 
 **Version Information**
@@ -53,22 +53,22 @@ go install github.com/username/netgaze@latest
 **Method 2: Download binary from releases**
 ```bash
 # Linux
-curl -L https://github.com/username/netgaze/releases/latest/download/netgaze-linux-amd64 -o netgaze
-chmod +x netgaze
+curl -L https://github.com/username/netgaze/releases/latest/download/ng-linux-amd64 -o ng
+chmod +x ng
 
 # macOS
-curl -L https://github.com/username/netgaze/releases/latest/download/netgaze-darwin-amd64 -o netgaze
-chmod +x netgaze
+curl -L https://github.com/username/netgaze/releases/latest/download/ng-darwin-amd64 -o ng
+chmod +x ng
 
 # Windows
-curl -L https://github.com/username/netgaze/releases/latest/download/netgaze-windows-amd64.exe -o netgaze.exe
+curl -L https://github.com/username/netgaze/releases/latest/download/ng-windows-amd64.exe -o ng.exe
 ```
 
 **Method 3: Build from source**
 ```bash
 git clone https://github.com/username/netgaze.git
 cd netgaze
-go build -o netgaze ./cmd
+make build
 ```
 
 **Dependencies Management**

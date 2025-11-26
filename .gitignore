@@ -1,2 +1,4 @@
 .env
-dev-docs/code/**
+.DS_Store
+ng
+netgaze

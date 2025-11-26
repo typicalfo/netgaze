@@ -10,7 +10,7 @@ type Report struct {
 	Target      string    `json:"target"`       // original user input
 	ResolvedAt  time.Time `json:"resolved_at"`  // UTC timestamp when collection finished
 	DurationMs  int64     `json:"duration_ms"`
-	ModeNoAgent bool      `json:"no_agent"`     // true if --no-agent was used
+	// ModeNoAgent field removed in this version
 
 	// DNS resolution
 	IPs         []net.IP  `json:"ips,omitempty"`          // A + AAAA
@@ -110,7 +110,7 @@ type TraceHop struct {
 }
 ```
 
-### Notes for coding agents
+### Notes for developers
 - All string durations are human-readable (e.g. "4.2ms"), never raw nanos in output
 - Empty structs/arrays are omitted in JSON via `omitempty`
 - `Errors` map is populated with friendly messages when a collector fails/times out

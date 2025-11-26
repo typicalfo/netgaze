@@ -1,6 +1,6 @@
 # Addendum 12 – Template Contents
 
-**Responsibility**: Define exact templates for --no-agent mode output formatting.
+**Responsibility**: Define exact templates for non-AI output formatting.
 
 **Files**: `internal/templates/summary.txt`, `internal/templates/summary.md`, `internal/templates/raw.txt`
 
