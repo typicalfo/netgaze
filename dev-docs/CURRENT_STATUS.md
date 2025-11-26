@@ -62,3 +62,19 @@
 - Analyze lipgloss examples from dev-docs/code/lipgloss-examples/
 - Improve responsive layout, dynamic sizing, readability
 - Fix crammed appearance, expand with screen size
+
+## 2025-11-25 10:00 - Fix build: implement outputPlainText - STARTED
+- Investigating missing outputPlainText reference in cmd/root.go
+
+## 2025-11-25 10:10 - Fix build: implement outputPlainText - COMPLETED
+- Implemented plain-text fallback output and restored successful build
+
+## 2025-11-25 21:21 - Increase default network timeouts - COMPLETED
+- Raised global and per-collector timeouts to reduce frequent timeouts in restrictive networks
+
+## 2025-11-25 21:30 - Improve styled error list formatting - COMPLETED
+- Styled output now uses a lipgloss list so each collector error appears on its own line
+
+## 2025-11-25 21:40 - Speed up collector tests - COMPLETED
+- Reduced per-test collector timeouts; go test ./... now completes faster while still exercising network paths
+

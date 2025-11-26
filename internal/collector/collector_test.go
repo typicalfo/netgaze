@@ -19,7 +19,7 @@ func TestCollect(t *testing.T) {
 			opts: Options{
 				EnablePorts: false,
 				NoAgent:     true,
-				Timeout:     5 * time.Second,
+				Timeout:     3 * time.Second,
 			},
 			wantErr: false, // DNS is implemented, should succeed
 		},
@@ -29,7 +29,7 @@ func TestCollect(t *testing.T) {
 			opts: Options{
 				EnablePorts: true,
 				NoAgent:     false,
-				Timeout:     10 * time.Second,
+				Timeout:     5 * time.Second,
 			},
 			wantErr: false, // DNS is implemented, should succeed
 		},

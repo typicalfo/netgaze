@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/list"
 	"github.com/charmbracelet/lipgloss/table"
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
@@ -84,7 +85,7 @@ func init() {
 	var jsonFlag string
 	rootCmd.Flags().StringVar(&jsonFlag, "json", "",
 		"Legacy alias for --output json")
-	rootCmd.Flags().DurationVar(&timeout, "timeout", 15*time.Second,
+	rootCmd.Flags().DurationVar(&timeout, "timeout", 30*time.Second,
 		"Global timeout for all operations")
 
 	// Hide the legacy --json flag from help but keep for compatibility
@@ -355,6 +356,159 @@ func outputRaw(report *model.Report) error {
 	return nil
 }
 
+func outputPlainText(report *model.Report) error {
+	fmt.Printf("Target: %s\n", report.Target)
+	fmt.Printf("Duration: %dms\n", report.DurationMs)
+
+	if len(report.IPv4) > 0 {
+		fmt.Printf("IPv4: %s\n", strings.Join(report.IPv4, ", "))
+	}
+	if len(report.IPv6) > 0 {
+		fmt.Printf("IPv6: %s\n", strings.Join(report.IPv6, ", "))
+	}
+
+	if len(report.Errors) > 0 {
+		fmt.Println()
+		fmt.Println("Errors:")
+		keys := make([]string, 0, len(report.Errors))
+		for k := range report.Errors {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			fmt.Printf("  %s: %s\n", k, report.Errors[k])
+		}
+	}
+
+	if report.Ping.PacketsSent > 0 {
+		fmt.Println()
+		fmt.Println("Ping:")
+		if report.Ping.Success {
+			fmt.Printf("  Packets: %d/%d received, %.1f%% loss\n", report.Ping.PacketsReceived, report.Ping.PacketsSent, report.Ping.PacketLossPct)
+			if report.Ping.AvgRtt != "" {
+				fmt.Printf("  RTT: min %s, avg %s, max %s\n", report.Ping.MinRtt, report.Ping.AvgRtt, report.Ping.MaxRtt)
+			}
+		} else {
+			fmt.Printf("  Packets: %d/%d received, %.1f%% loss (failed)\n", report.Ping.PacketsReceived, report.Ping.PacketsSent, report.Ping.PacketLossPct)
+			if report.Ping.Error != "" {
+				fmt.Printf("  Error: %s\n", report.Ping.Error)
+			}
+		}
+	}
+
+	if len(report.Trace.Hops) > 0 || report.Trace.Error != "" {
+		fmt.Println()
+		fmt.Println("Traceroute:")
+		if report.Trace.Success {
+			fmt.Printf("  Hops: %d\n", len(report.Trace.Hops))
+		} else if report.Trace.Error != "" {
+			fmt.Printf("  Error: %s\n", report.Trace.Error)
+		}
+	}
+
+	if report.Whois.Domain != "" || report.Whois.NetName != "" || report.Whois.OrgName != "" {
+		fmt.Println()
+		fmt.Println("WHOIS:")
+		if report.Whois.Domain != "" {
+			fmt.Printf("  Domain: %s\n", report.Whois.Domain)
+		}
+		if report.Whois.Registrar != "" {
+			fmt.Printf("  Registrar: %s\n", report.Whois.Registrar)
+		}
+		if report.Whois.Expires != "" {
+			fmt.Printf("  Expires: %s\n", report.Whois.Expires)
+		}
+		if report.Whois.NetName != "" {
+			fmt.Printf("  NetName: %s\n", report.Whois.NetName)
+		}
+		if report.Whois.OrgName != "" {
+			fmt.Printf("  Org: %s\n", report.Whois.OrgName)
+		}
+		if report.Whois.Country != "" {
+			fmt.Printf("  Country: %s\n", report.Whois.Country)
+		}
+	}
+
+	if report.Geo.ASN != "" || report.Geo.City != "" || report.Geo.Country != "" {
+		fmt.Println()
+		fmt.Println("Geolocation:")
+		if report.Geo.ASN != "" {
+			asn := report.Geo.ASN
+			if report.Geo.ASName != "" {
+				asn += " (" + report.Geo.ASName + ")"
+			}
+			if report.Geo.CountryCode != "" {
+				asn += " [" + report.Geo.CountryCode + "]"
+			}
+			fmt.Printf("  ASN: %s\n", asn)
+		}
+		var locationParts []string
+		if report.Geo.City != "" {
+			locationParts = append(locationParts, report.Geo.City)
+		}
+		if report.Geo.Region != "" {
+			locationParts = append(locationParts, report.Geo.Region)
+		}
+		if report.Geo.Country != "" {
+			locationParts = append(locationParts, report.Geo.Country)
+		}
+		if len(locationParts) > 0 {
+			fmt.Printf("  Location: %s\n", strings.Join(locationParts, ", "))
+		}
+		if report.Geo.ISP != "" {
+			fmt.Printf("  ISP: %s\n", report.Geo.ISP)
+		}
+	}
+
+	if len(report.Ports.Scanned) > 0 {
+		fmt.Println()
+		fmt.Println("Ports:")
+		fmt.Printf("  Scanned: %v\n", report.Ports.Scanned)
+		if len(report.Ports.Open) > 0 {
+			fmt.Printf("  Open: %v\n", report.Ports.Open)
+		}
+		if len(report.Ports.Closed) > 0 {
+			fmt.Printf("  Closed: %v\n", report.Ports.Closed)
+		}
+		if len(report.Ports.Filtered) > 0 {
+			fmt.Printf("  Filtered: %v\n", report.Ports.Filtered)
+		}
+		if report.Ports.Error != "" {
+			fmt.Printf("  Error: %s\n", report.Ports.Error)
+		}
+	}
+
+	if report.TLS.Subject != "" || report.TLS.Error != "" {
+		fmt.Println()
+		fmt.Println("TLS:")
+		if report.TLS.Subject != "" {
+			fmt.Printf("  Subject: %s\n", report.TLS.Subject)
+		}
+		if report.TLS.Issuer != "" {
+			fmt.Printf("  Issuer: %s\n", report.TLS.Issuer)
+		}
+		if report.TLS.CommonName != "" {
+			fmt.Printf("  Common Name: %s\n", report.TLS.CommonName)
+		}
+		if len(report.TLS.AltNames) > 0 {
+			fmt.Printf("  Alt Names: %s\n", strings.Join(report.TLS.AltNames, ", "))
+		}
+		if report.TLS.NotBefore != "" || report.TLS.NotAfter != "" {
+			fmt.Printf("  Valid: %s - %s\n", report.TLS.NotBefore, report.TLS.NotAfter)
+		}
+		if report.TLS.Expired {
+			fmt.Println("  Status: Expired")
+		} else if report.TLS.SelfSigned {
+			fmt.Println("  Status: Self-signed")
+		}
+		if report.TLS.Error != "" {
+			fmt.Printf("  Error: %s\n", report.TLS.Error)
+		}
+	}
+
+	return nil
+}
+
 func outputText(report *model.Report) error {
 	// If no-style is requested or output is being piped,
 	// fall back to plain text without ANSI codes.
@@ -389,34 +543,31 @@ func outputText(report *model.Report) error {
 	if len(report.IPv6) > 0 {
 		infoRows = append(infoRows, []string{labelStyle.Render("IPv6"), valueStyle.Render(fmt.Sprintf("%v", report.IPv6))})
 	}
-	if len(report.Errors) > 0 {
-		var keys []string
-		for k := range report.Errors {
-			keys = append(keys, k)
-		}
-		// Keep order stable for readability
-		sort.Strings(keys)
-
-		for i, k := range keys {
-			prefix := ""
-			if i == 0 {
-				prefix = "Errors" // only show label once
-			}
-			label := ""
-			if prefix != "" {
-				label = labelStyle.Render(prefix)
-			}
-			infoRows = append(infoRows, []string{
-				label,
-				errorStyle.Render(fmt.Sprintf("%s: %s", k, report.Errors[k])),
-			})
-		}
-	}
 
 	infoTable := newTable(infoRows...)
 
 	fmt.Println(infoTable.Render())
 	fmt.Println()
+
+	// Collector errors as a list
+	if len(report.Errors) > 0 {
+		keys := make([]string, 0, len(report.Errors))
+		for k := range report.Errors {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+
+		items := make([]any, 0, len(keys))
+		for _, k := range keys {
+			items = append(items, errorStyle.Render(fmt.Sprintf("%s: %s", k, report.Errors[k])))
+		}
+
+		errorsList := list.New(items...).Enumerator(list.Dash)
+
+		fmt.Println(labelStyle.Render("Errors"))
+		fmt.Println(errorsList)
+		fmt.Println()
+	}
 
 	// Ping statistics
 	if report.Ping.PacketsSent > 0 {

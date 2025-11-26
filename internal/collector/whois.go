@@ -12,8 +12,8 @@ import (
 )
 
 func collectWhois(ctx context.Context, target string, report *model.Report) error {
-	// Create context with 6-second timeout
-	ctx, cancel := context.WithTimeout(ctx, 6*time.Second)
+	// Create context with 10-second timeout
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
 	// Run WHOIS in goroutine to respect context

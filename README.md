@@ -39,14 +39,19 @@ ng 8.8.8.8 --output json &gt; intel.json            # JSON for automation
 
 Full CLI:
 ```
-ng &lt;target&gt; [flags]           # Default text output
+ng &lt;target&gt; [flags]           # Styled text output
 ng tui &lt;target&gt; [flags]        # Interactive TUI mode
+ng to &lt;target&gt; [flags]         # Traceroute JSON output
+ng tc &lt;target&gt; [flags]         # Traceroute baseline compare
+ng config [action]             # Manage configuration
+ng version                     # Show version information
 
 Flags:
-  --ports          Scan common ports (opt-in)
-  --output string  text/md/json/raw (for piping or automation)
-  --timeout duration  Global timeout (default 15s)
-  --json           Alias for --output json
+  --ports             Scan common ports (opt-in)
+  --output string     text/md/json/raw (for piping or automation)
+  --no-style          Disable all ANSI styling
+  --timeout duration  Global timeout (default 30s)
+  --json              Legacy alias for --output json (hidden)
 ```
 
 AI mode requires `OPENROUTER_API_KEY` env var.

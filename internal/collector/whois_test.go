@@ -38,7 +38,10 @@ func TestCollectWhois(t *testing.T) {
 				Errors: make(map[string]string),
 			}
 
-			err := collectWhois(context.Background(), tt.target, report)
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+			defer cancel()
+
+			err := collectWhois(ctx, tt.target, report)
 
 			// WHOIS should not return errors (graceful degradation)
 			if err != nil {

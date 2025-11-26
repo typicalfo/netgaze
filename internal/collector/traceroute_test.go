@@ -38,7 +38,10 @@ func TestCollectTraceroute(t *testing.T) {
 				Errors: make(map[string]string),
 			}
 
-			err := collectTraceroute(context.Background(), tt.target, report)
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+			defer cancel()
+
+			err := collectTraceroute(ctx, tt.target, report)
 
 			// Traceroute should not return errors (graceful degradation)
 			if err != nil {

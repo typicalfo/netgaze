@@ -38,7 +38,10 @@ func TestCollectGeo(t *testing.T) {
 				Errors: make(map[string]string),
 			}
 
-			err := collectGeo(context.Background(), tt.target, report)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			defer cancel()
+
+			err := collectGeo(ctx, tt.target, report)
 
 			// Geolocation should not return errors (graceful degradation)
 			if err != nil {
@@ -125,7 +128,7 @@ func TestLookupGeolocation(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			defer cancel()
 
 			resp, err := lookupGeolocation(ctx, tt.ip)

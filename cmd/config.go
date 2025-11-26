@@ -11,10 +11,10 @@ import (
 var configCmd = &cobra.Command{
 	Use:   "config [action]",
 	Short: "Manage netgaze configuration",
-	Long: `Manage netgaze configuration including API keys and settings.
+	Long: `Manage netgaze configuration including defaults and legacy API settings.
 
 Actions:
-  set-key    Set OpenRouter API key for AI mode
+  set-key    Legacy: store API key (not used in this version)
   show       Show current configuration
   clear      Clear all configuration`,
 	Args: cobra.MaximumNArgs(1),

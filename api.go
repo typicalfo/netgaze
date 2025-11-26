@@ -27,7 +27,7 @@ type Options struct {
 
 // DefaultTimeout is the fallback timeout used when
 // Options.Timeout is not set.
-const DefaultTimeout = 15 * time.Second
+const DefaultTimeout = 30 * time.Second
 
 // Run executes the netgaze collectors for the given target
 // and returns a populated Report. This is the primary entry

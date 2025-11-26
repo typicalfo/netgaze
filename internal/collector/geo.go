@@ -13,8 +13,8 @@ import (
 )
 
 func collectGeo(ctx context.Context, target string, report *model.Report) error {
-	// Create context with 4-second timeout
-	ctx, cancel := context.WithTimeout(ctx, 4*time.Second)
+	// Create context with 8-second timeout
+	ctx, cancel := context.WithTimeout(ctx, 8*time.Second)
 	defer cancel()
 
 	// Get IP address from target

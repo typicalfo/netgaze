@@ -39,7 +39,10 @@ func TestCollectASN(t *testing.T) {
 				Errors: make(map[string]string),
 			}
 
-			err := collectASN(context.Background(), tt.target, report)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			defer cancel()
+
+			err := collectASN(ctx, tt.target, report)
 
 			// ASN should not return errors (graceful degradation)
 			if err != nil {

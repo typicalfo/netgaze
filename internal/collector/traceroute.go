@@ -13,7 +13,7 @@ import (
 )
 
 func collectTraceroute(ctx context.Context, target string, report *model.Report) error {
-	hops, err := Traceroute(ctx, target, 10*time.Second)
+	hops, err := Traceroute(ctx, target, 20*time.Second)
 	if err != nil {
 		report.Errors["traceroute"] = fmt.Sprintf("Traceroute failed: %v", err)
 		report.Trace.Error = err.Error()
