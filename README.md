@@ -1,6 +1,8 @@
 # netgaze
 
-netgaze is a fast, single-binary network reconnaissance tool with a Charmbracelet-powered TUI. Enter an IP, domain, or URL to run parallel passive/active collectors and view results in a beautiful terminal interface. Note: netgaze is currently in active development and is not yet fully functional; expect incomplete features and potential breaking changes.
+netgaze is a single-binary network reconnaissance tool with a Charmbracelet-powered TUI. Enter an IP, domain, or URL to run parallel passive/active collectors and view results in the terminal.
+
+**NOTE:** netgaze is currently in active development and is not yet fully functional; expect incomplete features and potential breaking changes.
 
 Mode:
 - Deterministic, offline templated output (no AI)

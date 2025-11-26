@@ -84,3 +84,9 @@
 ## 2025-11-26 12:05 - Update README: mark project in development - COMPLETED
 - README updated with development status note near the top
 
+## 2025-11-26 12:10 - Update README: remove marketing language - STARTED
+- Simplifying README wording to be purely factual and non-marketing
+
+## 2025-11-26 12:15 - Update README: remove marketing language - COMPLETED
+- README intro now uses neutral, descriptive language only
+
