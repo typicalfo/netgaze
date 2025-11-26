@@ -78,3 +78,9 @@
 ## 2025-11-25 21:40 - Speed up collector tests - COMPLETED
 - Reduced per-test collector timeouts; go test ./... now completes faster while still exercising network paths
 
+## 2025-11-26 12:00 - Update README: mark project in development - STARTED
+- Updating top-level README to clarify netgaze is in development and not yet fully functional
+
+## 2025-11-26 12:05 - Update README: mark project in development - COMPLETED
+- README updated with development status note near the top
+
